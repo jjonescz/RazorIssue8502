@@ -28,4 +28,16 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+    public async Task<IActionResult> AppendLineItems(int startIndex, int numberOfLines, int? discount)
+    {
+        var items = new List<LineItemWithIndex>();
+
+        for (var i = startIndex; i < startIndex + numberOfLines; i++)
+        {
+            items.Add(new LineItemWithIndex(i, discount ?? 0));
+        }
+
+        return PartialView("~/Views/Shared/AppendLineItems.cshtml", items);
+    }
 }
