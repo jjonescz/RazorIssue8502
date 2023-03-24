@@ -1,10 +1,33 @@
 ﻿@page
+@namespace RazorIssue8502.Pages
 @model IndexModel
-@{
-    ViewData["Title"] = "Home page";
+<table>
+<tbody>
+@foreach (var item in Model.Items)
+{
+    <tr id="line-item-@item.Index" class="sale-line-items" data-index="@item.Index">
+        <td>
+            <span>@(item.Index + 1)</span>
+        </td>
+        <td>
+            <input id="line-item-productSku-@item.Index" class="form-control" value="" data-index="@item.Index" value="@item.Sku" />
+            <input id="line-item-productId-@item.Index" name="Items[@item.Index].ProductId" type="hidden" value="@item.ProductId" />
+            <input id="line-item-id-@item.Index" type="hidden" name="Items[@item.Index].Id" value="@item.Id" />
+        </td>
+        <td id="line-item-description-@item.Index">@item.Description</td>
+        <td>
+            <input id="line-item-quantity-@item.Index"
+                   class="form-control"
+                   value="@(item.Quantity != 0 ? item.Quantity.ToString() : string.Empty)"
+                   type="number"
+                   name="Items[@item.Index].Quantity" />
+        </td>
+        <td class="item-box" style="text-align:right;">
+            <span id="line-item-list-price-@item.Index" data-value="@item.Price">@item.Price.ToString("C2")</span><br />
+            <span id="line-item-disc-price-@item.Index" data-value="@(item.Price * (1M - (item.Discount * 0.01M)))" style="display:none;"></span>
+        </td>
+        <td id="line-item-subtotal-@item.Index" style="text-align:right;"></td>
+    </tr>
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+</tbody>
+</table>
